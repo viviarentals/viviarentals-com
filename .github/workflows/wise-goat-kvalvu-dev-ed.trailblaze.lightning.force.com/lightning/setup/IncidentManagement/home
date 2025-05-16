@@ -1,0 +1,147 @@
+Legal Name: NORTH AMERICAN REAL ESTATE PARTNERS II EMPLOYEES PF LPPublic Name: VIVIA CONNECTCountry: United StatesEntity Type: Limited PartnershipLEI: 9598003M2QTCW0MZ2C51MCC: 6513 (Real Estate Agents and Managers - Rentals)
+
+Contact Information
+
+Business Address: 12700 Whitewater Drive, Minnetonka, MN 55343
+
+Registered NJ Address: 301 State RT, Suite 17, Rutherford, NJ 07070
+
+Business Phone: +1 833-728-9697
+
+Support Phone: +1 314-358-1862
+
+Email: support@viviarentals.com
+
+Website: https://viviarentals.com
+
+Support URL: https://viviarentals.com/support
+
+Tax Information
+
+EIN (Tax ID): 343704714
+
+NJ Sales Tax Start Date: May 6, 2025
+
+First Tax Filing Due: July 20, 2025
+
+Business Description
+
+VIVIA CONNECT is a technology platform that offers ecommerce-enabled services for residential rentals in the U.S. It enables landlords and tenants to manage listings, payments, applications, and more. The platform also syndicates listings to top rental platforms including Zillow, Redfin, Zumper, Rent.com, and Facebook Marketplace.
+
+Platform & Integrations
+
+Primary Domain: viviarentals.com
+
+Billing Subdomain: billing.viviarentals.com
+
+Stripe Connect Integration: Enabled
+
+PDF Generation: Enabled via PDFKit
+
+Email Notifications: Enabled via Nodemailer
+
+Google Cloud Storage: Used for PDF backups
+
+MongoDB: Stores tax return applications and submission logs
+
+Signature Capture: HTML5 Canvas with SignaturePad.js
+
+Corporate Hierarchy (GLEIF)
+
+LEI: 9598003M2QTCW0MZ2C51 (VIVIA RENTAL)
+
+Direct & Ultimate Subsidiaries:
+
+LEI
+
+Country
+
+Entity Name
+
+959800N9HSHKQSS0HD92
+
+ES
+
+MOSTOLES RE DEVELOPMENT, S.L.
+
+959800DYU2LHHZ4X9K57
+
+ES
+
+BALMIS 1 RESIDENTIAL DEVELOPMENT, S.L.
+
+959800GG609YL81FTP64
+
+ES
+
+BALMIS 3 RESIDENTIAL DEVELOPMENT, S.L.
+
+959800ZVBEST23WKM942
+
+ES
+
+BALMIS 4 RESIDENTIAL DEVELOPMENT, S.L.
+
+GLEIF Direct Children API: https://api.gleif.org/api/v1/lei-records/9598003M2QTCW0MZ2C51/direct-children
+
+GLEIF Ultimate Children API: https://api.gleif.org/api/v1/lei-records/9598003M2QTCW0MZ2C51/ultimate-children
+
+Compliance
+
+Terms of Service accepted on setup via Stripe API
+
+Webhooks configured for partner integrations (Zillow, Redfin, Realtor, Stripe, etc.)
+
+Data retention and audit logs maintained per financial compliance standards
+
+Google Pay & Wallet registration complete
+
+Dashboard & Admin
+
+Public admin dashboard available at /public/admin.html
+
+Tax return submissions visible via REST endpoint: /api/tax-returns/all
+
+Admin tooling supports CSV/PDF export and GCP upload tracking
+
+SLSA Provenance Workflow
+
+name: SLSA generic generator
+on:
+  workflow_dispatch:
+  release:
+    types: [created]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    outputs:
+      digests: ${{ steps.hash.outputs.digests }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build artifacts
+        run: |
+            echo "artifact1" > artifact1
+            echo "artifact2" > artifact2
+
+      - name: Generate subject for provenance
+        id: hash
+        run: |
+          set -euo pipefail
+          files=$(ls artifact*)
+          echo "hashes=$(sha256sum $files | base64 -w0)" >> "${GITHUB_OUTPUT}"
+
+  provenance:
+    needs: [build]
+    permissions:
+      actions: read
+      id-token: write
+      contents: write
+    uses: slsa-framework/slsa-github-generator/.github/workflows/generator_generic_slsa3.yml@v1.4.0
+    with:
+      base64-subjects: "${{ needs.build.outputs.digests }}"
+      upload-assets: true
+
+Last updated: 2025-05-15
